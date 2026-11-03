@@ -1,0 +1,29 @@
+{
+  "package_name": "numu-tech",
+  "version": "0.2.0",
+  "description": "Zero-Pain Cloud Migration Automation Engine for Gulf contracting companies",
+  "build_status": {
+    "editable_install": "PASSED",
+    "import_test": "PASSED",
+    "unit_tests": "7/7 PASSED",
+    "demo_script": "PASSED"
+  },
+  "key_features": [
+    "Multi-cloud adapters (Azure, AWS, GCP)",
+    "Dependency mapping engine",
+    "Migration pattern library (Lift & Shift, Replatform, Refactor, Retire)",
+    "Risk assessment module",
+    "Migration planning engine with acceptance criteria",
+    "Validation and rollback support"
+  ],
+  "tests": [
+    "test_all_checks_pass",
+    "test_some_checks_fail",
+    "test_all_checks_fail",
+    "test_rollback_success",
+    "test_rollback_partial_failure",
+    "test_rollback_without_prior_validation",
+    "test_empty_validation_checks"
+  ],
+  "commit": "ae65fa6"
+}
