@@ -1,0 +1,206 @@
+Metadata-Version: 2.4
+Name: numu-tech
+Version: 0.1.0
+Summary: Zero-Pain Cloud Migration Automation Engine for Gulf contracting companies
+Author-email: Ahmed Turki <ahmed@numu.tech>
+License: MIT
+Project-URL: Homepage, https://github.com/ahmed-turki/numu-tech
+Project-URL: Repository, https://github.com/ahmed-turki/numu-tech
+Project-URL: Issues, https://github.com/ahmed-turki/numu-tech/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: azure-identity>=1.12.0
+Requires-Dist: azure-mgmt-compute>=27.0.0
+Requires-Dist: azure-mgmt-storage>=20.0.0
+Requires-Dist: azure-mgmt-sql>=2.0.0
+Requires-Dist: boto3>=1.28.0
+Requires-Dist: google-cloud-compute>=1.10.0
+Requires-Dist: google-cloud-storage>=2.10.0
+Requires-Dist: google-cloud-sql>=0.1.0
+Requires-Dist: networkx>=3.1
+Requires-Dist: pyyaml>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=7.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.3.0; extra == "docs"
+
+# Numu Tech - Zero-Pain Cloud Migration Automation Engine
+
+A production-ready Python framework for automating cloud migrations with minimal disruption for Gulf contracting companies.
+
+## Features
+
+- **Multi-Cloud Support**: Azure, AWS, and GCP adapters with unified interface
+- **Dependency Mapping**: Automatic dependency analysis and migration ordering
+- **Migration Patterns**: Lift & Shift, Replatform, Refactor, Retire strategies
+- **Risk Assessment**: Automated risk scoring and mitigation planning
+- **Rollback Support**: Built-in rollback mechanisms for safe migrations
+- **Planning Engine**: Intelligent migration planning with acceptance criteria
+
+## Project Structure
+
+```
+Numu-Tech/
+├── src/
+│   └── numu_tech/
+│       ├── __init__.py
+│       ├── core.py              # Core engine, plans, and results
+│       ├── adapters/
+│       │   ├── __init__.py
+│       │   └── base.py          # Cloud provider adapters
+│       ├── mappers/
+│       │   ├── __init__.py
+│       │   └── dependency.py    # Dependency mapping engine
+│       ├── patterns/
+│       │   ├── __init__.py
+│       │   └── base.py          # Migration pattern library
+│       ├── risk/
+│       │   ├── __init__.py
+│       │   └── assessment.py    # Risk assessment module
+│       ├── planning/
+│       │   ├── __init__.py
+│       │   └── engine.py        # Migration planning engine
+│       └── validation/
+│           ├── __init__.py
+│           └── rollback.py      # Validation and rollback support
+├── tests/
+│   ├── __init__.py
+│   ├── test_core.py
+│   ├── test_adapters.py
+│   ├── test_mappers.py
+│   ├── test_patterns.py
+│   └── test_integration.py
+├── examples/
+│   └── azure_migration.py
+├── scripts/
+│   └── demo.py
+├── pyproject.toml
+└── README.md
+```
+
+## Quick Start
+
+### Installation
+
+```bash
+pip install -e .
+```
+
+### Basic Usage
+
+```python
+from numu_tech import MigrationEngine, MigrationTarget
+from numu_tech.adapters import AzureAdapter, AWSAdapter
+from numu_tech.mappers import DependencyMapper
+
+# Initialize engine
+engine = MigrationEngine()
+
+# Register adapters
+engine.register_adapter("azure", AzureAdapter(credentials={
+    "subscription_id": "your-sub-id",
+    "tenant_id": "your-tenant-id",
+    "client_id": "your-client-id",
+    "client_secret": "your-client-secret"
+}))
+
+engine.register_adapter("aws", AWSAdapter(credentials={
+    "access_key_id": "your-access-key",
+    "secret_access_key": "your-secret-key",
+    "region": "eastus"
+}))
+
+# Define source and target resources
+source = MigrationTarget(
+    id="prod-vm-001",
+    name="Production VM",
+    type="compute",
+    provider="azure",
+    region="eastus"
+)
+
+target = MigrationTarget(
+    id="target-vm-001",
+    name="Target VM",
+    type="compute",
+    provider="aws",
+    region="us-east-1"
+)
+
+# Create migration plan
+plan = engine.create_plan(
+    plan_id="migration-001",
+    name="Azure to AWS VM Migration",
+    source=source,
+    target=target,
+    steps=[
+        {
+            "type": "migrate_compute",
+            "provider": "azure",
+            "params": {"instance_id": "prod-vm-001"}
+        },
+        {
+            "type": "migrate_compute", 
+            "provider": "aws",
+            "params": {"target_instance": "target-vm-001"}
+        }
+    ]
+)
+
+# Execute migration
+result = await engine.execute_plan("migration-001")
+print(f"Success: {result.success}")
+print(f"Migrated: {result.migrated_resources}")
+print(f"Failed: {result.failed_resources}")
+```
+
+## Running Examples
+
+```bash
+# Run the demo script
+python scripts/demo.py
+
+# Run Azure migration example
+python examples/azure_migration.py
+```
+
+## Testing
+
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run specific test file
+pytest tests/test_core.py -v
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Authors
+
+- Ahmed Turki - Initial work - [GitHub](https://github.com/ahmed-turki)
