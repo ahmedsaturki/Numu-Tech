@@ -1,6 +1,6 @@
-
 from dataclasses import dataclass
-from typing import Optional, Dict, Any
+from typing import Any
+
 
 @dataclass
 class MigrationConfig:
@@ -12,4 +12,4 @@ class MigrationConfig:
     cloud_provider: str = "azure"
     region: str = "eastus"
     project_name: str = "phoenix-migration"
-    additional_settings: Optional[Dict[str, Any]] = None
+    additional_settings: dict[str, Any] | None = None

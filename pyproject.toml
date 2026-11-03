@@ -73,6 +73,13 @@ target-version = ["py310"]
 line-length = 100
 target-version = "py310"
 
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "PIE", "BLE", "RUF"]
+ignore = ["BLE001"]  # Allow broad exception handling for simulated validation
+
+[tool.ruff.lint.isort]
+known-first-party = ["numu_tech"]
+
 [tool.mypy]
 python_version = "3.10"
 warn_return_any = true

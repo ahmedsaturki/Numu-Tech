@@ -1,20 +1,20 @@
 """Base migration patterns for common cloud migration scenarios"""
 
-from typing import Dict, List, Any
 from dataclasses import dataclass, field
-from ..core import MigrationTarget
+from typing import Any
 
 
 @dataclass
 class MigrationPattern:
     """Base class for migration patterns"""
+
     name: str
     description: str
-    source_types: List[str] = field(default_factory=list)
-    target_types: List[str] = field(default_factory=list)
-    parameters_schema: Dict[str, Any] = field(default_factory=dict)
-    
-    def validate_params(self, params: Dict[str, Any]) -> bool:
+    source_types: list[str] = field(default_factory=list)
+    target_types: list[str] = field(default_factory=list)
+    parameters_schema: dict[str, Any] = field(default_factory=dict)
+
+    def validate_params(self, params: dict[str, Any]) -> bool:
         """Validate pattern parameters against schema"""
         for required in self.parameters_schema.get("required", []):
             if required not in params:
@@ -24,7 +24,7 @@ class MigrationPattern:
 
 class LiftAndShiftPattern(MigrationPattern):
     """Lift and shift migration pattern - minimal changes, direct migration"""
-    
+
     def __init__(self):
         super().__init__(
             name="lift_and_shift",
@@ -37,15 +37,15 @@ class LiftAndShiftPattern(MigrationPattern):
                     "instance_size": {"type": "string"},
                     "region": {"type": "string"},
                     "network": {"type": "string"},
-                    "security_groups": {"type": "array"}
-                }
-            }
+                    "security_groups": {"type": "array"},
+                },
+            },
         )
 
 
 class ReplatformPattern(MigrationPattern):
     """Replatform migration pattern - cloud-optimized but minimal changes"""
-    
+
     def __init__(self):
         super().__init__(
             name="replatform",
@@ -58,15 +58,15 @@ class ReplatformPattern(MigrationPattern):
                     "optimization_level": {"type": "string", "enum": ["low", "medium", "high"]},
                     "target_service": {"type": "string"},
                     "cost_target": {"type": "number"},
-                    "performance_target": {"type": "number"}
-                }
-            }
+                    "performance_target": {"type": "number"},
+                },
+            },
         )
 
 
 class RefactorPattern(MigrationPattern):
     """Refactor pattern - re-architect for cloud-native"""
-    
+
     def __init__(self):
         super().__init__(
             name="refactor",
@@ -76,18 +76,27 @@ class RefactorPattern(MigrationPattern):
             parameters_schema={
                 "required": ["architecture_type", "data_strategy"],
                 "properties": {
-                    "architecture_type": {"type": "string", "enum": ["microservices", "serverless", "hybrid"]},
-                    "data_strategy": {"type": "string", "enum": ["migrate", "replatform", "rewrite"]},
-                    "deployment_method": {"type": "string", "enum": ["container", "function", "vm"]},
-                    "automation_level": {"type": "string", "enum": ["manual", "semi", "full"]}
-                }
-            }
+                    "architecture_type": {
+                        "type": "string",
+                        "enum": ["microservices", "serverless", "hybrid"],
+                    },
+                    "data_strategy": {
+                        "type": "string",
+                        "enum": ["migrate", "replatform", "rewrite"],
+                    },
+                    "deployment_method": {
+                        "type": "string",
+                        "enum": ["container", "function", "vm"],
+                    },
+                    "automation_level": {"type": "string", "enum": ["manual", "semi", "full"]},
+                },
+            },
         )
 
 
 class RetirePattern(MigrationPattern):
     """Retire pattern - decommission unused resources"""
-    
+
     def __init__(self):
         super().__init__(
             name="retire",
@@ -99,44 +108,39 @@ class RetirePattern(MigrationPattern):
                 "properties": {
                     "confirmation": {"type": "boolean"},
                     "backup_required": {"type": "boolean"},
-                    "retention_days": {"type": "integer", "minimum": 0}
-                }
-            }
+                    "retention_days": {"type": "integer", "minimum": 0},
+                },
+            },
         )
 
 
 class PatternLibrary:
     """Library of migration patterns"""
-    
+
     def __init__(self):
-        self._patterns: Dict[str, MigrationPattern] = {}
+        self._patterns: dict[str, MigrationPattern] = {}
         self._register_default_patterns()
-    
+
     def _register_default_patterns(self) -> None:
         """Register default migration patterns"""
-        patterns = [
-            LiftAndShiftPattern(),
-            ReplatformPattern(),
-            RefactorPattern(),
-            RetirePattern()
-        ]
-        
+        patterns = [LiftAndShiftPattern(), ReplatformPattern(), RefactorPattern(), RetirePattern()]
+
         for pattern in patterns:
             self.register(pattern)
-    
+
     def register(self, pattern: MigrationPattern) -> None:
         """Register a migration pattern"""
         self._patterns[pattern.name] = pattern
-    
-    def get_pattern(self, name: str) -> Optional[MigrationPattern]:
+
+    def get_pattern(self, name: str) -> MigrationPattern | None:
         """Get a pattern by name"""
         return self._patterns.get(name)
-    
-    def list_patterns(self) -> List[str]:
+
+    def list_patterns(self) -> list[str]:
         """List all available patterns"""
         return list(self._patterns.keys())
-    
-    def get_patterns_for_types(self, source_type: str, target_type: str) -> List[MigrationPattern]:
+
+    def get_patterns_for_types(self, source_type: str, target_type: str) -> list[MigrationPattern]:
         """Get patterns suitable for source/target types"""
         matching = []
         for pattern in self._patterns.values():
