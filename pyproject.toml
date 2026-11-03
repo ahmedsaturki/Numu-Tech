@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "numu-tech"
-version = "0.1.0"
+version = "0.2.0"
 description = "Zero-Pain Cloud Migration Automation Engine for Gulf contracting companies"
 readme = "README.md"
 authors = [
@@ -51,9 +51,9 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ahmed-turki/numu-tech"
-Repository = "https://github.com/ahmed-turki/numu-tech"
-Issues = "https://github.com/ahmed-turki/numu-tech/issues"
+Homepage = "https://github.com/ahmedsaturki/Numu-Tech"
+Repository = "https://github.com/ahmedsaturki/Numu-Tech"
+Issues = "https://github.com/ahmedsaturki/Numu-Tech/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

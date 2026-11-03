@@ -1,6 +1,6 @@
 """Numu Tech - Zero-Pain Cloud Migration Automation Engine"""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __author__ = "Ahmed Turki"
 __email__ = "ahmed@numu.tech"
 
