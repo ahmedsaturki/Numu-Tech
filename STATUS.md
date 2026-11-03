@@ -22,7 +22,7 @@ Numu Tech is a Zero-Pain Cloud Migration Automation Engine that validates cloud 
 - ✅ Editable install works (`pip install -e .`)
 - ✅ All imports resolve correctly
 - ✅ Public API properly exported via `__all__`
-- ✅ 12 passing tests (integration + unit)
+- ✅ **12 passing tests** (integration + unit)
 - ✅ Demo script runs end-to-end without exceptions
 
 ## Quick Start
@@ -75,7 +75,7 @@ src/numu_tech/
 
 - **Integration Tests:** 5 tests covering end-to-end demo flow
 - **Unit Tests:** 7 tests covering validation and rollback logic
-- **Total:** 12 tests, all passing
+- **Total:** 12 tests, **all passing**
 
 ## Development Workflow
 
