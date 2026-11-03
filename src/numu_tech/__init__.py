@@ -11,6 +11,7 @@ from .patterns.base import MigrationPattern
 from .planning.engine import MigrationPlanner
 from .validation.rollback import MigrationValidator
 from .risk.assessment import RiskAssessor
+from .config.settings import MigrationConfig
 
 __all__ = [
     "MigrationEngine",
@@ -23,5 +24,6 @@ __all__ = [
     "MigrationStatus",
     "MigrationPlanner",
     "MigrationValidator",
-    "RiskAssessor"
+    "RiskAssessor",
+    "MigrationConfig"
 ]
