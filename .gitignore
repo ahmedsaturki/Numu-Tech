@@ -31,3 +31,7 @@ Thumbs.db
 # Env / secrets
 .env
 .env.*
+
+# Stub modules (incomplete, not ready for commit)
+src/numu_tech/leads/
+src/numu_tech/outreach/
