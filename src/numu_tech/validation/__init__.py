@@ -7,6 +7,9 @@ from numu_tech.validation.rollback import (
     ValidationStatus,
 )
 
+# Backward compatibility alias
+ValidationReport = ValidationResult
+
 __all__ = [
     "MigrationValidator",
     "RollbackLog",
@@ -14,6 +17,3 @@ __all__ = [
     "ValidationResult",
     "ValidationStatus",
 ]
-
-# Backward compatibility alias
-ValidationReport = ValidationResult
