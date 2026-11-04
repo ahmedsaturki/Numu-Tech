@@ -1,18 +1,22 @@
 """Tests for CLI prospect management."""
-import json
 import tempfile
 from pathlib import Path
 
-import pytest
-
-from numu_tech.prospects.cli import cmd_add, cmd_check, cmd_export, cmd_import, cmd_list, main
-from numu_tech.prospects.models import Prospect, ProspectStatus
+from numu_tech.prospects.cli import cmd_add, cmd_check, cmd_export, cmd_import, cmd_list
 
 
 def test_cmd_add(tmp_path: Path):
     """Test adding a prospect via CLI."""
     json_file = tmp_path / "prospects.json"
-    args = type("Args", (), {"file": str(json_file), "company": "Test Corp", "industry": "Tech", "city": "Riyadh", "website": None, "contact": None, "notes": None})()
+    args = type("Args", (), {
+        "file": str(json_file),
+        "company": "Test Corp",
+        "industry": "Tech",
+        "city": "Riyadh",
+        "website": None,
+        "contact": None,
+        "notes": None,
+    })()
     
     result = cmd_add(args)
     assert result == 0

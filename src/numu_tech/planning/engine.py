@@ -1,9 +1,8 @@
 """Migration planning engine"""
 
-from datetime import datetime
 from typing import Any
 
-from numu_tech.core import MigrationPlan, MigrationTarget, MigrationStatus
+from numu_tech.core import MigrationPlan, MigrationStatus, MigrationTarget
 
 
 class MigrationPlanner:
@@ -27,8 +26,20 @@ class MigrationPlanner:
         plan = MigrationPlan(
             id=plan_id,
             name=name,
-            source=MigrationTarget(id=source_resource_id, name='', type='unknown', provider='unknown', region='unknown'),
-            target=MigrationTarget(id=target_resource_id, name='', type='unknown', provider='unknown', region='unknown'),
+            source=MigrationTarget(
+                id=source_resource_id,
+                name='',
+                type='unknown',
+                provider='unknown',
+                region='unknown',
+            ),
+            target=MigrationTarget(
+                id=target_resource_id,
+                name='',
+                type='unknown',
+                provider='unknown',
+                region='unknown',
+            ),
             steps=steps,
         )
 
