@@ -1,11 +1,11 @@
 """Tests for migration validation and rollback workflow."""
+
 import pytest
-import asyncio
+
 from numu_tech.validation.rollback import (
     MigrationValidator,
-    ValidationStatus,
-    ValidationResult,
     RollbackLog,
+    ValidationStatus,
 )
 
 

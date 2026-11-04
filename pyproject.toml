@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "numu-tech"
-version = "0.1.0"
+version = "0.2.0"
 description = "Zero-Pain Cloud Migration Automation Engine for Gulf contracting companies"
 readme = "README.md"
 authors = [
@@ -12,7 +12,7 @@ authors = [
 ]
 license = {text = "MIT"}
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -50,10 +50,13 @@ docs = [
     "sphinx-rtd-theme>=1.3.0",
 ]
 
+[project.scripts]
+numu-prospects = "numu_tech.prospects.cli:main"
+
 [project.urls]
-Homepage = "https://github.com/ahmed-turki/numu-tech"
-Repository = "https://github.com/ahmed-turki/numu-tech"
-Issues = "https://github.com/ahmed-turki/numu-tech/issues"
+Homepage = "https://github.com/ahmedsaturki/Numu-Tech"
+Repository = "https://github.com/ahmedsaturki/Numu-Tech"
+Issues = "https://github.com/ahmedsaturki/Numu-Tech/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -72,6 +75,13 @@ target-version = ["py310"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "PIE", "BLE", "RUF"]
+ignore = ["BLE001"]  # Allow broad exception handling for simulated validation
+
+[tool.ruff.lint.isort]
+known-first-party = ["numu_tech"]
 
 [tool.mypy]
 python_version = "3.10"
