@@ -11,7 +11,13 @@ from .mappers.dependency import DependencyMapper
 from .patterns.base import MigrationPattern
 from .planning.engine import MigrationPlanner
 from .risk.assessment import RiskAssessor
-from .validation import MigrationValidator, RollbackLog, ValidationResult, ValidationStatus
+from .validation import (
+    MigrationValidator,
+    RollbackLog,
+    ValidationReport,
+    ValidationResult,
+    ValidationStatus,
+)
 
 __all__ = [
     "CloudAdapter",
@@ -27,6 +33,7 @@ __all__ = [
     "MigrationValidator",
     "RiskAssessor",
     "RollbackLog",
+    "ValidationReport",
     "ValidationResult",
     "ValidationStatus",
 ]
