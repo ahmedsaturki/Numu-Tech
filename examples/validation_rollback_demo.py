@@ -2,9 +2,8 @@
 
 from numu_tech.validation.rollback import (
     MigrationValidator,
-    ValidationStatus,
-    ValidationResult,
     RollbackLog,
+    ValidationStatus,
 )
 
 async def demo_validation_and_rollback():
@@ -62,9 +61,21 @@ async def demo_validation_and_rollback():
             source="production-db",
             target="pre-migration-db",
             actions=[
-                {"name": "schema_rollback", "target_resource": "database_schema", "expected_success": True},
-                {"name": "api_rollback", "target_resource": "api_endpoints", "expected_success": True},
-                {"name": "data_rollback", "target_resource": "data_integrity", "expected_success": True},
+            {
+                "name": "schema_rollback",
+                "target_resource": "database_schema",
+                "expected_success": True,
+            },
+            {
+                "name": "api_rollback",
+                "target_resource": "api_endpoints",
+                "expected_success": True,
+            },
+            {
+                "name": "data_rollback",
+                "target_resource": "data_integrity",
+                "expected_success": True,
+            },
             ]
         )
         
