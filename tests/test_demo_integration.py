@@ -30,9 +30,9 @@ class TestDemoIntegration:
             timeout=30,
         )
 
-        assert (
-            result.returncode == 0
-        ), f"Demo failed with exit code {result.returncode}\nSTDERR: {result.stderr}"
+        assert result.returncode == 0, (
+            f"Demo failed with exit code {result.returncode}\nSTDERR: {result.stderr}"
+        )
         assert "Demo Complete" in result.stdout, "Demo did not complete"
         assert "Initiating rollback" in result.stdout, "Rollback was not triggered"
 
@@ -73,9 +73,7 @@ class TestDemoIntegration:
             "test-migration",
             source="prod",
             target="pre",
-            actions=[
-                {"name": "test", "target_resource": "resource", "expected_success": True}
-            ],
+            actions=[{"name": "test", "target_resource": "resource", "expected_success": True}],
         )
         assert len(rollback_logs) > 0
         assert any(log.success for log in rollback_logs)

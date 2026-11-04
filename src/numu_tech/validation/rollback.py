@@ -43,7 +43,7 @@ class RollbackLog:
 class MigrationValidator:
     """Validates migration state and provides rollback support"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._validation_results: dict[str, list[ValidationResult]] = {}
         self._rollback_logs: dict[str, list[RollbackLog]] = {}
 

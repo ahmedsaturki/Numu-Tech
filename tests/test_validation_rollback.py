@@ -1,4 +1,5 @@
 """Tests for migration validation and rollback workflow."""
+
 import pytest
 
 from numu_tech.validation.rollback import (
