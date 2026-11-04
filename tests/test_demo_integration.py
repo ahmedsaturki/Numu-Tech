@@ -30,9 +30,9 @@ class TestDemoIntegration:
             timeout=30,
         )
 
-        assert result.returncode == 0, (
-            f"Demo failed with exit code {result.returncode}\nSTDERR: {result.stderr}"
-        )
+        assert (
+            result.returncode == 0
+        ), f"Demo failed with exit code {result.returncode}\nSTDERR: {result.stderr}"
         assert "Demo Complete" in result.stdout, "Demo did not complete"
         assert "Initiating rollback" in result.stdout, "Rollback was not triggered"
 
