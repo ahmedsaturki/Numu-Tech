@@ -1,17 +1,14 @@
 """Core migration engine for Numu Tech"""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-from .adapters.base import CloudAdapter
-from .mappers.dependency import DependencyMapper
-
-
-def _utcnow_iso() -> str:
-    """Get current UTC time in ISO format"""
-    return datetime.utcnow().isoformat()
+if TYPE_CHECKING:
+    from .adapters.base import CloudAdapter
 
 
 class MigrationStatus(Enum):
@@ -49,7 +46,7 @@ class MigrationPlan:
     acceptance_criteria: dict[str, Any] = field(default_factory=dict)
     rollback_plan: dict[str, Any] | None = None
     status: MigrationStatus = MigrationStatus.PENDING
-    created_at: str = field(default_factory=_utcnow_iso)
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 @dataclass
@@ -68,10 +65,15 @@ class MigrationResult:
 class MigrationEngine:
     """Core engine that orchestrates cloud migrations"""
 
+    STEP_METHODS: ClassVar[dict[str, str]] = {
+        "compute": "migrate_compute",
+        "storage": "migrate_storage",
+        "database": "migrate_database",
+    }
+
     def __init__(self) -> None:
         self._adapters: dict[str, CloudAdapter] = {}
         self._plans: dict[str, MigrationPlan] = {}
-        self._dependency_mapper = DependencyMapper()
 
     def register_adapter(self, provider: str, adapter: CloudAdapter) -> None:
         """Register a cloud provider adapter"""
@@ -109,6 +111,10 @@ class MigrationEngine:
         plan.status = MigrationStatus.IN_PROGRESS
         result = MigrationResult(plan_id=plan_id, success=False)
 
+        source_adapter = self._adapters.get(plan.source.provider)
+        if source_adapter:
+            plan.rollback_plan = await source_adapter.create_rollback_plan(plan.source.config)
+
         try:
             for step in plan.steps:
                 step_result = await self._execute_step(step, plan)
@@ -128,7 +134,7 @@ class MigrationEngine:
                     await self._execute_rollback(plan.rollback_plan)
                     result.rollback_performed = True
 
-        except Exception as e:
+        except (ValueError, RuntimeError, KeyError) as e:
             plan.status = MigrationStatus.FAILED
             result.errors.append(str(e))
             if plan.rollback_plan:
@@ -136,12 +142,14 @@ class MigrationEngine:
                 result.rollback_performed = True
 
         result.execution_time_seconds = (
-            datetime.utcnow() - datetime.fromisoformat(plan.created_at)
+            datetime.now(timezone.utc) - datetime.fromisoformat(plan.created_at)
         ).total_seconds()
 
         return result
 
-    async def _execute_step(self, step: dict[str, Any], plan: MigrationPlan) -> dict[str, Any]:
+    async def _execute_step(
+        self, step: dict[str, Any], plan: MigrationPlan
+    ) -> dict[str, list[str]]:
         """Execute a single migration step"""
         step_type = step.get("type", "generic")
         provider = step.get("provider", "azure")
@@ -150,11 +158,14 @@ class MigrationEngine:
         if not adapter:
             return {"migrated": [], "failed": [f"No adapter for provider {provider}"]}
 
-        method = getattr(adapter, step_type, None)
+        method_name = self.STEP_METHODS.get(step_type)
+        if method_name is None:
+            return {"migrated": [], "failed": [f"Unknown step type {step_type!r}"]}
+        method = getattr(adapter, method_name, None)
         if not method:
-            return {"migrated": [], "failed": [f"Step type {step_type} not found on adapter"]}
+            return {"migrated": [], "failed": [f"Step type {step_type!r} not found on adapter"]}
 
-        return cast("dict[str, Any]", await method(step.get("params", {})))
+        return cast("dict[str, list[str]]", await method(step.get("params", {})))
 
     async def _execute_rollback(self, rollback_plan: dict[str, Any]) -> None:
         """Execute rollback plan"""
