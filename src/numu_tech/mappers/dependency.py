@@ -18,7 +18,7 @@ class DependencyNode:
 class DependencyMapper:
     """Maps and analyzes dependencies between cloud resources"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._graph: dict[str, DependencyNode] = {}
         self._resource_types: dict[str, set[str]] = {}
 

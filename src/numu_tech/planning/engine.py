@@ -3,13 +3,13 @@
 from datetime import datetime
 from typing import Any
 
-from numu_tech.core import MigrationPlan
+from numu_tech.core import MigrationPlan, MigrationTarget, MigrationStatus
 
 
 class MigrationPlanner:
     """Plans and manages migration execution"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._plans: dict[str, MigrationPlan] = {}
 
     def create_plan(
@@ -25,15 +25,11 @@ class MigrationPlanner:
         """Create a new migration plan"""
 
         plan = MigrationPlan(
-            plan_id=plan_id,
+            id=plan_id,
             name=name,
-            source_resource_id=source_resource_id,
-            target_resource_id=target_resource_id,
+            source=MigrationTarget(id=source_resource_id, name='', type='unknown', provider='unknown', region='unknown'),
+            target=MigrationTarget(id=target_resource_id, name='', type='unknown', provider='unknown', region='unknown'),
             steps=steps,
-            created_at=datetime.utcnow(),
-            status="draft",
-            risk_level=risk_level,
-            rollback_enabled=rollback_enabled,
         )
 
         self._plans[plan_id] = plan
@@ -55,7 +51,7 @@ class MigrationPlanner:
     def update_plan_status(self, plan_id: str, status: str) -> MigrationPlan:
         """Update the status of a migration plan"""
         plan = self.get_plan(plan_id)
-        plan.status = status
+        plan.status = MigrationStatus(status)
         return plan
 
     def delete_plan(self, plan_id: str) -> bool:

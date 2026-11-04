@@ -1,0 +1,16 @@
+[
+  {
+    "prospect_id": "8ceff495-fbb9-41d0-b737-7597194748e3",
+    "company_name": "Test Company",
+    "industry": "Construction",
+    "city": "Riyadh",
+    "website": "https://test.com",
+    "business_contact_channel": null,
+    "contact_name": null,
+    "date_added": "2026-11-04T16:24:55.236494",
+    "status": "new",
+    "last_contact_date": null,
+    "next_action": null,
+    "notes": ""
+  }
+]

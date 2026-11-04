@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Any, cast
 
 from .adapters.base import CloudAdapter
 from .mappers.dependency import DependencyMapper
@@ -68,7 +68,7 @@ class MigrationResult:
 class MigrationEngine:
     """Core engine that orchestrates cloud migrations"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._adapters: dict[str, CloudAdapter] = {}
         self._plans: dict[str, MigrationPlan] = {}
         self._dependency_mapper = DependencyMapper()
@@ -154,7 +154,7 @@ class MigrationEngine:
         if not method:
             return {"migrated": [], "failed": [f"Step type {step_type} not found on adapter"]}
 
-        return await method(step.get("params", {}))
+        return cast("dict[str, Any]", await method(step.get("params", {})))
 
     async def _execute_rollback(self, rollback_plan: dict[str, Any]) -> None:
         """Execute rollback plan"""

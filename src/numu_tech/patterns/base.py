@@ -25,7 +25,7 @@ class MigrationPattern:
 class LiftAndShiftPattern(MigrationPattern):
     """Lift and shift migration pattern - minimal changes, direct migration"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             name="lift_and_shift",
             description="Direct migration with minimal code changes",
@@ -46,7 +46,7 @@ class LiftAndShiftPattern(MigrationPattern):
 class ReplatformPattern(MigrationPattern):
     """Replatform migration pattern - cloud-optimized but minimal changes"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             name="replatform",
             description="Cloud-optimized migration with minimal code changes",
@@ -67,7 +67,7 @@ class ReplatformPattern(MigrationPattern):
 class RefactorPattern(MigrationPattern):
     """Refactor pattern - re-architect for cloud-native"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             name="refactor",
             description="Re-architect for cloud-native capabilities",
@@ -97,7 +97,7 @@ class RefactorPattern(MigrationPattern):
 class RetirePattern(MigrationPattern):
     """Retire pattern - decommission unused resources"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             name="retire",
             description="Decommission unused or redundant resources",
@@ -117,7 +117,7 @@ class RetirePattern(MigrationPattern):
 class PatternLibrary:
     """Library of migration patterns"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._patterns: dict[str, MigrationPattern] = {}
         self._register_default_patterns()
 

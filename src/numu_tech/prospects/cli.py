@@ -126,7 +126,7 @@ def main(argv: list[str] | None = None) -> int:
     if cmd is None:
         print(f"Unknown command: {args.command}", file=sys.stderr)
         return 1
-    return cmd(args)
+    return int(cmd(args))
 
 
 if __name__ == "__main__":

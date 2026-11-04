@@ -1,8 +1,11 @@
 """Tests for CLI prospect management."""
+import json
 import tempfile
 from pathlib import Path
 
-from numu_tech.prospects.cli import cmd_add, cmd_check, cmd_export, cmd_import, cmd_list
+import pytest
+
+from numu_tech.prospects.cli import cmd_add, cmd_check, cmd_export, cmd_import, cmd_list, main
 from numu_tech.prospects.models import Prospect, ProspectStatus
 
 

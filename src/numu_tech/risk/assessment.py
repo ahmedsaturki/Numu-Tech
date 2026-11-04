@@ -41,7 +41,7 @@ class MigrationRisk:
 class RiskAssessor:
     """Assesses migration risks and provides mitigation recommendations"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._risk_patterns: dict[str, list[RiskFactor]] = {}
         self._register_default_patterns()
 
